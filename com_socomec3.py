@@ -95,7 +95,7 @@ class diris():
     tab = []
     tab = update_crc()
 
-#to continue from here (25 Mar 1:13am)
+#to continue from here (25 Mar 1:13am). write to csv.
 
     #message to send -----------------------------------------------------------
     msg = bytearray([header[0],header[1],add_H,add_L,0,size_msg,tab[0],tab[1]])
