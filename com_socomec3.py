@@ -17,7 +17,7 @@ size_msg = 5 #4 digits for the readings of interest + 1
 
 # header of the modbus message to send :
 header = [0x05,0x03]
-header_size =4
+header_size = 4
 count_header = 0
 
 class diris:
@@ -60,18 +60,15 @@ class diris:
 		print data #comprises 8 lists each with 6 elements
 		crc_H = []
 		crc_L = []
-		crc_list = []
 		for list in data:
 			for a in list:
 				crc = 0xffff
 				crc_init = self.generate_crc16_table()
 				idx = crc_init[(crc ^ ord(a)) & 0xff]
 				crc = ((crc >> 8) & 0xff) ^ idx
-			#crc_list.append(crc)
-			#crc_H.append(crc & ~((crc>>8)<<8))
-			#crc_L.append(crc>>8)
-		#return[crc_H,crc_L]
-		#return crc_list
+			crc_H.append(crc & ~((crc>>8)<<8))
+			crc_L.append(crc>>8)
+		return zip(crc_H,crc_L)
 
 	def query_msg(self):
 		tab = []
