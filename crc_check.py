@@ -3,7 +3,7 @@ header_size =4
 count_header = 0
 
 # addess of register to read and size of the message expected
-add = int(51484)
+add = int(51284)
 size_msg = int(2)+1
 
 #initialization ------------------------------------------------------------
@@ -27,6 +27,7 @@ def generate_crc16_table():
 
 crc_init = generate_crc16_table()
 data_2_crc = [chr(int(header[0])),chr(int(header[1])),chr(int(add_H)),chr(int(add_L)),chr(int(0)),chr(int(size_msg))]
+print data_2_crc
 
 def update_crc():
 	crc = 0xffff

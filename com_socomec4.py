@@ -57,39 +57,45 @@ class diris:
 		# crc = 0xffff
 		# crc_init = self.generate_crc16_table()
 		data = self.crc_initialise()
-		print data #comprises 8 lists each with 6 elements
+		# print data #comprises 8 lists each with 6 elements
 		crc_H = []
 		crc_L = []
+		crc_list = []
 		for list in data:
 			for a in list:
 				crc = 0xffff
 				crc_init = self.generate_crc16_table()
 				idx = crc_init[(crc ^ ord(a)) & 0xff]
 				crc = ((crc >> 8) & 0xff) ^ idx
-			# crc is iterated over the list
-			crc_H.append(crc & ~((crc>>8)<<8))
-			crc_L.append(crc>>8)
+			crc_list.append(crc)
+			print crc_list
+				# crc_H = crc & ~((crc>>8)<<8)
+				# crc_L = crc>>8
 		return zip(crc_H,crc_L)
 
-	def query_msg(self):
-		tab = []
-		tab = self.update_crc()
-		#message to send -----------------------------------------------------------
-		for i in range(len(reading)):
-			add = int(reading[i])
-			add_H = add >>8
-			add_L = add & 0x00ff
-			msg = bytearray([header[0],header[1],add_H,add_L,0,size_msg,tab[0][i],tab[1][i]])
-			ser.write(msg)
-			time.sleep(0.1)
-			data_rec = ''
-			count_size_msg =1
-			while ser.inWaiting() > 0:
-				rcv = ser.read(1)
-				count_header+=1
-				if count_header>header_size and count_size_msg<size_msg:
-					count_size_msg+=1
-					data_rec+=rcv
-					data_hex = binascii.hexlify(data_rec)
-				time.sleep(0.01)
-		return data_hex
+	# def query_msg(self):
+	# 	tab = []
+	# 	tab = self.update_crc()
+	# 	#message to send -----------------------------------------------------------
+	# 	for i in range(len(reading)):
+	# 		add = int(reading[i])
+	# 		add_H = add >>8
+	# 		add_L = add & 0x00ff
+	# 		msg = bytearray([header[0],header[1],add_H,add_L,0,size_msg,tab[0][i],tab[1][i]])
+	# 		ser.write(msg)
+	# 		time.sleep(0.1)
+	# 		data_rec = ''
+	# 		count_size_msg =1
+	# 		while ser.inWaiting() > 0:
+	# 			rcv = ser.read(1)
+	# 			count_header+=1
+	# 			if count_header>header_size and count_size_msg<size_msg:
+	# 				count_size_msg+=1
+	# 				data_rec+=rcv
+	# 				data_hex = binascii.hexlify(data_rec)
+	# 			time.sleep(0.01)
+	# 	return data_hex
+
+a = diris(port='/dev/Vcom')
+u = a.update_crc()
+#print u
